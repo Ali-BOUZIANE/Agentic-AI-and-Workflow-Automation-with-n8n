@@ -1,0 +1,397 @@
+{
+  "name": "AI",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -448,
+        16
+      ],
+      "id": "8352264e-0e5f-43ed-8809-13af98242d1b",
+      "name": "When chat message received",
+      "webhookId": "5f75ab35-ca04-46e5-b579-47c59f4f546e"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "ton role est d'envoyer un email aux doctorants du laboratoire.le message consiste a faire un appel a contributions a la journee doctorale organisee par le labortoire 2IACS.pour les doctorants de premiere anne,il faudrait preciser qu'ils doivenet preparer un poster.les doctorants de deuxieme annee,troisieme et quatrieme annee doivent participer avec une presentation orale.le mail a envoyer devrait preciser le nom,le prenom et le sujet de these contenir aussi un petit resume du planning de la journee doctorale.le mail devrait etre aussi bien formate au format HTML.le mail est considere etre envoye par le comite d'organisation.\\nune fois les emails envoye,mettre a jour la date d'envoi du message."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -240,
+        16
+      ],
+      "id": "aac51608-d15f-4b5e-b130-cdebb3ed4c58",
+      "name": "AI Agent",
+      "retryOnFail": false,
+      "notes": "ton role est d'envoyer un email aux doctorants du laboratoire.le message consiste a faire un appel a contributions a la journee doctorale organisee par le labortoire 2IACS.pour les doctorants de premiere anne,il faudrait preciser qu'ils doivenet preparer un poster.les doctorants de deuxieme annee,troisieme et quatrieme annee doivent participer avec une presentation orale.le mail a envoyer devrait preciser le nom,le prenom et le sujet de these contenir aussi un petit resume du planning de la journee doctorale.le mail devrait etre aussi bien formate au format HTML.le mail est considere etre envoye par le comite d'organisation.\\nune fois les emails envoye,mettre a jour la date d'envoi du message."
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -256,
+        224
+      ],
+      "id": "ddecbc90-9009-4c50-90da-abe9ee5c02dc",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "consulter la liste des doctorants",
+        "documentId": {
+          "__rl": true,
+          "value": "17fcm67RVJFzGm31QJKA2aYWGksTYazppT4ATYF5oX1o",
+          "mode": "list",
+          "cachedResultName": "doctorants",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17fcm67RVJFzGm31QJKA2aYWGksTYazppT4ATYF5oX1o/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2098706144,
+          "mode": "list",
+          "cachedResultName": "doctorants",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17fcm67RVJFzGm31QJKA2aYWGksTYazppT4ATYF5oX1o/edit#gid=2098706144"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        64,
+        256
+      ],
+      "id": "8164227d-905f-4ba6-b1c3-01bdda45e402",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "15MEvbHYkB5m0tm3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Send a message in Gmail",
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "Appel a la participation",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        48
+      ],
+      "id": "ca5b930d-bbfd-478c-8c3f-a79b1413305d",
+      "name": "Send a message in Gmail",
+      "webhookId": "90e74fc0-d244-4cf1-ac58-50eaa105a72e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bzu3K5vbWhE442lq",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "consulter le planing de la journee doctorale",
+        "documentId": {
+          "__rl": true,
+          "value": "1jEKLOQ4Fygbbl4sNF1gdpTIT3auiPZNM1lgkB4Fi3Mg",
+          "mode": "list",
+          "cachedResultName": "planning",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jEKLOQ4Fygbbl4sNF1gdpTIT3auiPZNM1lgkB4Fi3Mg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Feuille 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jEKLOQ4Fygbbl4sNF1gdpTIT3auiPZNM1lgkB4Fi3Mg/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -112,
+        224
+      ],
+      "id": "e16a5d03-ce6b-40ff-9947-e07393f3df16",
+      "name": "Get row(s) in sheet in Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "15MEvbHYkB5m0tm3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Mettre a jour la date de l'envoi du mail",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "17fcm67RVJFzGm31QJKA2aYWGksTYazppT4ATYF5oX1o",
+          "mode": "list",
+          "cachedResultName": "doctorants",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17fcm67RVJFzGm31QJKA2aYWGksTYazppT4ATYF5oX1o/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2098706144,
+          "mode": "list",
+          "cachedResultName": "doctorants",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17fcm67RVJFzGm31QJKA2aYWGksTYazppT4ATYF5oX1o/edit#gid=2098706144"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "NOM": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('NOM__using_to_match_', ``, 'string') }}",
+            "Date d’envoi de l’email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Date_d_envoi_de_l_email', ``, 'string') }}",
+            "Doctorant informé": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Doctorant_inform_', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "NOM"
+          ],
+          "schema": [
+            {
+              "id": "NOM",
+              "displayName": "NOM",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Prénom",
+              "displayName": "Prénom",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email Personnelle",
+              "displayName": "Email Personnelle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Niveau",
+              "displayName": "Niveau",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Sujet de thèse",
+              "displayName": "Sujet de thèse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Votre Directeur de thèse",
+              "displayName": "Votre Directeur de thèse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Votre co-directeur de thèse",
+              "displayName": "Votre co-directeur de thèse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Doctorant informé",
+              "displayName": "Doctorant informé",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date d’envoi de l’email",
+              "displayName": "Date d’envoi de l’email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        304,
+        256
+      ],
+      "id": "ae62a379-ecfe-42e8-8d0c-57ba53181c07",
+      "name": "Update row in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "15MEvbHYkB5m0tm3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        224
+      ],
+      "id": "f7f89bfc-7efe-4bd4-9052-e2d1b117d38f",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Q5FrwZsqdoc5w5jU",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "94bb5904-b463-40bf-a126-0301d56823f9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e3b66bb877a14fadfd12cab361ead07ca47e040fd9f8464d1bd998b2a888ae58"
+  },
+  "id": "c_KmJ_Mg2e6Xie6071gfu",
+  "tags": []
+}
